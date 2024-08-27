@@ -1,0 +1,32 @@
+[
+    {
+        "customerName": "Luis",
+        "gender": "Male",
+        "age": 34,
+        "country": "Spain"
+    },
+    {
+        "customerName": "Hai Jin",
+        "gender": "Female",
+        "age": 23,
+        "country": "South Korea"
+    },
+    {
+        "customerName": "Isabella",
+        "gender": "Female",
+        "age": 35,
+        "country": "New Zealand"
+    },
+    {
+        "customerName": "Leo",
+        "gender": "Male",
+        "age": 18,
+        "country": "Brazil"
+    },
+    {
+        "customerName": "Sophia",
+        "gender": "Female",
+        "age": 24, 
+        "country": "United States"
+    }
+]

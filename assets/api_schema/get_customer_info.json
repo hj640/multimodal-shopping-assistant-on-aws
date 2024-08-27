@@ -1,0 +1,54 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Get Customer Information API",
+      "description": "APIs for a GarmentFinder agent. You have a function to gather customer's information based on customer's name.",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/customer/{CustomerName}/getInfo": {
+        "get": {
+          "description": "Based on provided customer name, return ustomer information like customer gender, age, country, and preferences.",
+          "parameters": [{
+            "name": "CustomerName",
+            "in": "path",
+            "description": "Customer Name",
+            "required": true,
+            "schema": {
+                "type": "string"
+            }
+        }],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "gender": {
+                        "type": "string",
+                        "description": "Customer's gender."
+                      },
+                      "country": {
+                        "type": "string",
+                        "description": "Country that customer currently lives in."
+                      },
+                      "age": {
+                        "type": "int",
+                        "description": "Customer's age."
+                      },
+                      "preference": {
+                        "type": "list",
+                        "description": "Cstomer's fashion preference."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

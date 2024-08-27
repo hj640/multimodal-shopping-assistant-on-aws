@@ -14,9 +14,6 @@ def uplaod_images_to_s3(bucket_name, local_folder):
     # Create an S3 client 
     s3_client = boto3.client('s3')
 
-    # Create Bucket 
-    create_s3_bucket(bucket_name)
-
     # Iterate through all files in the local folder
     for filename in os.listdir(local_folder): 
         if filename.endswith(('.png')): 

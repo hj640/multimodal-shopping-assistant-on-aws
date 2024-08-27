@@ -1,0 +1,51 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Retrieve Products API",
+      "description": "APIs for a GarmentFinder agent. You have a function to retrieve products from knowledge base.",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/retrieveProducts": {
+        "post": {
+          "description": "Retrieve products from the knowledge base and reuturn the output.",
+          "requestBody": {
+            "description": "The request body for the application.",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "prompt": {
+                      "type": "string",
+                      "description": "Enhanced prompt"
+                    }
+                  },
+                  "required": ["prompt"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "enhancedPrompt": {
+                        "type": "string",
+                        "description": "Retrieved products."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

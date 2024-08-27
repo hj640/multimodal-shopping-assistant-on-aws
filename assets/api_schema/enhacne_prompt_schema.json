@@ -1,0 +1,55 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Prompt Enhancement API",
+    "description": "APIs for a GarmentFinder agent. You have a function to enhance user's prompt.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/enhancePrompt": {
+      "post": {
+        "description": "Enhance the prompt by extracting names, places, or occasions and asking the SONNET model for fashion style recommendations. If there is none, just return the original prompt.",
+        "requestBody": {
+          "description": "The request body for the application.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "User's prompt"
+                  },
+                  "customerInformation": {
+                    "type": "string",
+                    "description": "Customer's information"
+                  }
+                },
+                "required": ["prompt", "customerInformation"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enhancedPrompt": {
+                      "type": "string",
+                      "description": "The enhanced prompt with fashion style recommendations."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

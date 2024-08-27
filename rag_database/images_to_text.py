@@ -7,8 +7,8 @@ from botocore.exceptions import ClientError
 SONNET30 = "anthropic.claude-3-sonnet-20240229-v1:0"
 
 ASSIGN_ROLE_PROMPT = """
-        You are an AI model designed to analyze and descrbie fashion items in images. 
-        Your task is to identify and describe specific freatures of the clothing item in the image provided. 
+        You are an AI model designed to analyze and descrbe fashion items in images. 
+        Your task is to identify and describe specific features of the clothing item in the image provided. 
         EXTREMELY IMPORTANT TO KEEP IN MIND: Always skip the preamble. Neer use ambiguous words like "Likely". Here is the image. 
     """
 
@@ -90,9 +90,7 @@ def convert_file_name(file_name):
     # Combine the new directory and new file name 
     converted_file_name = f'{new_directory}/{new_filename}'
 
-    return converted_file_name
-
-print(convert_file_name('image-dataset/0108775015.png'))
+    return converted_file_name 
 
 def image_to_text(BUCKET_NAME):
 
@@ -112,11 +110,11 @@ def image_to_text(BUCKET_NAME):
                     image_key = obj['Key']
 
                     ##### Prevent duplicate 
-                    parts = image_key.split('/')
-                    filename = parts[-1]
-                    first_three_digits = int(filename[:3])
-                    if first_three_digits < 68: 
-                        continue 
+                    # parts = image_key.split('/')
+                    # filename = parts[-1]
+                    # first_three_digits = int(filename[:3])
+                    # if first_three_digits < 79: 
+                    #     continue 
 
                     # Retrieve and encode image 
                     s3_image_response = s3_client.get_object(Bucket=BUCKET_NAME, Key=image_key)
@@ -133,6 +131,8 @@ def image_to_text(BUCKET_NAME):
 
                     # Upload the JSON string to S3 
                     s3_client.put_object(Bucket=BUCKET_NAME, Key=json_key, Body=json_string, ContentType='application/json')
+
+                    print(f"Successfully processed image: {image_key} to {json_key}")
 
                 except Exception as e:
                     print(f'Error {e} occured for file: {image_key}')
