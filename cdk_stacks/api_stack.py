@@ -24,6 +24,7 @@ class ApiStack(Stack):
             code=_lambda.Code.from_asset("lambdas"),
             handler='bedrock_agent_invokation.handler',
             timeout=Duration.seconds(180),
+            memory_size=1024,
             environment={
                 "BEDROCK_AGENT_ID": Fn.import_value("BedrockAgentID"),
                 "BEDROCK_AGENT_ALIAS": Fn.import_value("BedrockAgentAlias"),

@@ -24,34 +24,34 @@ class AgentLambdasStack(Stack):
             compatible_runtimes=[_lambda.Runtime.PYTHON_3_12]
         )
 
-        enhance_prompt_lambda = _lambda.Function(
-            self, "enhance-prompt-lambda",
-            runtime=_lambda.Runtime.PYTHON_3_12,
-            code=_lambda.Code.from_asset("lambdas"),
-            handler='enhance_prompt.handler',
-            timeout=Duration.seconds(120),
-            layers=[lambda_layer]
-        )
+        # enhance_prompt_lambda = _lambda.Function(
+        #     self, "enhance-prompt-lambda",
+        #     runtime=_lambda.Runtime.PYTHON_3_12,
+        #     code=_lambda.Code.from_asset("lambdas"),
+        #     handler='enhance_prompt.handler',
+        #     timeout=Duration.seconds(120),
+        #     layers=[lambda_layer]
+        # )
         
-        # Assign bedrock invoke moel policy to lambda
-        enhance_prompt_lambda.role.add_to_principal_policy(iam.PolicyStatement(
-            effect=iam.Effect.ALLOW,
-            actions=["bedrock:InvokeModel"],
-            resources=["*"]
-        ))
+        # # Assign bedrock invoke moel policy to lambda
+        # enhance_prompt_lambda.role.add_to_principal_policy(iam.PolicyStatement(
+        #     effect=iam.Effect.ALLOW,
+        #     actions=["bedrock:InvokeModel"],
+        #     resources=["*"]
+        # ))
 
-        # Add permissions to Lambda function resource policy. 
-        add_lambda_resource_policy = enhance_prompt_lambda.add_permission(
-            "AllowBedrock",
-            principal=iam.ServicePrincipal("bedrock.amazonaws.com"),
-            action="lambda:InvokeFunction",
-            source_arn=f"arn:aws:bedrock:{self.region}:{self.account}:agent/*"
-        )
+        # # Add permissions to Lambda function resource policy. 
+        # add_lambda_resource_policy = enhance_prompt_lambda.add_permission(
+        #     "AllowBedrock",
+        #     principal=iam.ServicePrincipal("bedrock.amazonaws.com"),
+        #     action="lambda:InvokeFunction",
+        #     source_arn=f"arn:aws:bedrock:{self.region}:{self.account}:agent/*"
+        # )
 
-        # Export the lambda arn 
-        CfnOutput(self, "EnhancePromptLambdaArn",
-                  value=enhance_prompt_lambda.function_arn,
-                  export_name="EnhancePromptLambdaArn")
+        # # Export the lambda arn 
+        # CfnOutput(self, "EnhancePromptLambdaArn",
+        #           value=enhance_prompt_lambda.function_arn,
+        #           export_name="EnhancePromptLambdaArn")
         
         # 2. Create get customer informtaion labmda function
 
@@ -62,6 +62,7 @@ class AgentLambdasStack(Stack):
             handler='get_customer_info.handler',
             timeout=Duration.seconds(120),
             layers=[lambda_layer],
+            memory_size=1024,
             environment={
                 "TABLE_NAME": Fn.import_value("CustomerTableName")
             }
@@ -109,6 +110,7 @@ class AgentLambdasStack(Stack):
             handler='retrieve_products.handler',
             timeout=Duration.seconds(120),
             layers=[lambda_layer],
+            memory_size=1024,
             environment={
                 "KNOWLEDGEBASE_ID": Fn.import_value("KnowledgebaseID")
             }

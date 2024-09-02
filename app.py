@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import os
-
 import aws_cdk as cdk
 from cdk_stacks.dynamodb_stack import DynamodbStack
 from cdk_stacks.agent_lambda_stack import AgentLambdasStack
@@ -26,14 +24,7 @@ agent_lambda_stack = AgentLambdasStack(app, "AgentLambdaStack", env=env_for_demo
 
 bedrock_stack = BedrockStack(app, "BedrockStack", env=env_for_demo)
 
-
 apigw_stack = ApiStack(app, "ApiStack", env=env_for_demo)
-
-# agent_lambda_stack.add_dependency(dynamodb_stack)
-# bedrock_stack.add_dependency(agent_lambda_stack)
-# aoss_stack.add_dependency(bedrock_stack)
-# kb_stack.add_dependency(aoss_stack)
-# apigw_stack.add_dependency(kb_stack)
 
 aoss_stack.add_dependency(dynamodb_stack)
 kb_stack.add_dependency(aoss_stack)

@@ -42,6 +42,7 @@ def query(prompt, session_id):
         # Extract the body content 
         body_content = str(response_data.get("body", ""))
         body_content = body_content.replace('\\n', '\n')
+        body_content = body_content.strip('"')
 
         if "<query>" in body_content:
             return False, single_answer(body_content)
@@ -137,14 +138,28 @@ def get_image_and_product_details(response):
 def single_answer(response):
     return parse_query(response)
 
+def remove_duplicates_preserve_order(seq):
+    seen = set()
+    return [x for x in seq if not (x in seen or seen.add(x))]
+
 def multi_answer(response):
     image_paths, json_paths = get_image_and_product_details(response)
+    image_paths = remove_duplicates_preserve_order(image_paths)
+    json_paths = remove_duplicates_preserve_order(json_paths)
     images = []
     descriptions = []
-    for image_path, json_path in zip(image_paths, json_paths):
+    for i, (image_path, json_path) in enumerate(zip(image_paths, json_paths)):
         img = parse_image(bucket_name, image_path)
         json_data = parse_meta_data(bucket_name, json_path)
         images.append(img)
-        descriptions.append(json_data['productImageDescription'])
+        if "productName" in json_data:
+            product_name = json_data["productName"]
+        elif "productNameInWords" in json_data:
+            product_name = json_data["productNameInWords"]
+        elif "productNameWords" in json_data:
+            product_name = json_data["productNameWords"]
+        description = f'{i+1}. {product_name} \n\n {json_data["productImageDescription"]}'
+        descriptions.append(description)
     print(images, descriptions)
+    print("ZIPPED ANSWER: ", list(zip(images, descriptions)))
     return list(zip(images, descriptions))

@@ -26,8 +26,8 @@ class BedrockStack(Stack):
             agent_instruction = file.read() 
 
         # Add schema for the bedrock agent
-        with open('assets/api_schema/enhacne_prompt_schema.json') as file:
-            enhance_prompt_schema = file.read() 
+        # with open('assets/api_schema/enhacne_prompt_schema.json') as file:
+        #     enhance_prompt_schema = file.read() 
 
         with open('assets/api_schema/get_customer_info.json') as file:
             get_cust_info_schema = file.read() 
@@ -49,34 +49,25 @@ class BedrockStack(Stack):
                                          foundation_model='anthropic.claude-3-sonnet-20240229-v1:0',
                                          instruction=agent_instruction,
                                          agent_resource_role_arn=bedrock_agent_role_arn,
-                                        #  prompt_override_configuration=bedrock.CfnAgent.PromptOverrideConfigurationProperty(
-                                        #      prompt_configurations=[
-                                        #          bedrock.CfnAgent.PromptConfigurationProperty(
-                                        #              base_prompt_template=kb_temp_def,
-                                        #              prompt_type="KNOWLEDGE_BASE_RESPONSE_GENERATION",
-                                        #              prompt_state="ENABLED",
-                                        #              prompt_creation_mode="OVERRIDDEN",
-                                        #              inference_configuration=bedrock.CfnAgent.InferenceConfigurationProperty(
-                                        #                  maximum_length=2048,
-                                        #                  stop_sequences=["⏎⏎Human:"],
-                                        #                  temperature=0,
-                                        #                  top_k=250,
-                                        #                  top_p=1
-                                        #              )),
-                                        #         bedrock.CfnAgent.PromptConfigurationProperty(
-                                        #              base_prompt_template=orch_temp_def,
-                                        #              prompt_type="ORCHESTRATION",
-                                        #              prompt_state="ENABLED",
-                                        #              prompt_creation_mode="OVERRIDDEN",
-                                        #              inference_configuration=bedrock.CfnAgent.InferenceConfigurationProperty(
-                                        #                  maximum_length=2048,
-                                        #                  stop_sequences=["</error>","</answer>","</invoke>"],
-                                        #                  temperature=0,
-                                        #                  top_k=250,
-                                        #                  top_p=1
-                                        #              ))
-                                        #      ]
-                                        #  ),
+                                         prompt_override_configuration=bedrock.CfnAgent.PromptOverrideConfigurationProperty(
+                                             prompt_configurations=[
+                                                 bedrock.CfnAgent.PromptConfigurationProperty(
+                                                     prompt_type="KNOWLEDGE_BASE_RESPONSE_GENERATION",
+                                                     prompt_state="DISABLED"),
+                                                # bedrock.CfnAgent.PromptConfigurationProperty(
+                                                #      base_prompt_template=orch_temp_def,
+                                                #      prompt_type="ORCHESTRATION",
+                                                #      prompt_state="ENABLED",
+                                                #      prompt_creation_mode="OVERRIDDEN",
+                                                #      inference_configuration=bedrock.CfnAgent.InferenceConfigurationProperty(
+                                                #          maximum_length=2048,
+                                                #          stop_sequences=["</error>","</answer>","</invoke>"],
+                                                #          temperature=0,
+                                                #          top_k=250,
+                                                #          top_p=1
+                                                #      ))
+                                             ]
+                                         ),
                                          action_groups=[
                                             #  bedrock.CfnAgent.AgentActionGroupProperty(
                                             #      action_group_name="EnhancePromptFunction",

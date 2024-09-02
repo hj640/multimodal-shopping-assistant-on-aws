@@ -66,5 +66,6 @@ if prompt:
                     st.write(desc)
         st.session_state.messages.append({"role": "multi-modal-assistant", "content": answer})
     else:
-        st.chat_message("assistant").write(answer)
+        with st.chat_message("assistant"):
+            st.write(answer)
         st.session_state.messages.append({"role": "assistant", "content": answer})
