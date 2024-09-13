@@ -44,12 +44,9 @@ def query(prompt, session_id):
         body_content = body_content.replace('\\n', '\n')
         body_content = body_content.strip('"')
 
-        if "<query>" in body_content:
-            return False, single_answer(body_content)
-        elif is_meta_data(body_content):
+        if is_meta_data(body_content):
             return True, multi_answer(body_content)
-        else:
-            return False, body_content
+        return False, single_answer(body_content)
 
     else:
         error_message = f"API request failed: {response.status_code}"
@@ -62,21 +59,25 @@ load_dotenv()
 s3 = boto3.client('s3')
 bucket_name = os.getenv('S3_BUCKET_NAME')
 
-def parse_query(response): 
-     # Extract text within the <query> tags
-    start_tag = "<query>"
-    end_tag = "</query>"
-    start_index = response.find(start_tag) + len(start_tag)
-    end_index = response.find(end_tag)
+def need_parse_query(response):
+    pattern = r'<.*?>(.*?)</.*?>'
+    matches = re.findall(pattern, response)
+    if matches: 
+        return True 
+    return False
 
-    # Extract the relevant message 
-    if start_index != -1 and end_index != -1:
-        extracted_text = response[start_index:end_index].strip() 
-    else: 
-        extracted_text = "Extracted text not found."
-        print("Extracted text not found.")
-    
-    return extracted_text
+def parse_query(response): 
+    pattern = r'<.*?>(.*?)</.*?>'
+    matches = re.findall(pattern, response)
+    if matches: 
+        response = ""
+        for match in matches:
+            response += match 
+    sentences = response.split(". ")
+    if len(sentences) > 2: 
+        sentences = sentences[2:] 
+    cleaned_text = ". ".join(sentences).strip()
+    return cleaned_text 
 
 def resize_image(image, max_width=150): 
     aspect_ratio = image.height / image.width 
