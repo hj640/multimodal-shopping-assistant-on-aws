@@ -1,5 +1,10 @@
+## This project demonstartes multimodal fashion recommendation chatbot on AWS 
+### Architecture 
 
-# Welcome to your CDK Python project!
+<img width="741" height="317" alt="Image" src="https://github.com/user-attachments/assets/ec109574-0913-4810-86c9-9fd1292a13ea" />
+
+
+## Deployment
 
 This is a blank project for CDK development with Python.
 
